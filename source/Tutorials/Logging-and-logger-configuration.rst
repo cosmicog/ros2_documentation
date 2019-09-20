@@ -39,7 +39,7 @@ To set the level of the demo's logger back to ``INFO``\ , call the service with:
 
 .. code-block:: bash
 
-   ros2 service call /config_logger logging_demo/ConfigLogger "{logger_name: 'logger_usage_demo', level: INFO}"
+   ros2 service call /config_logger logging_demo/srv/ConfigLogger "{logger_name: 'logger_usage_demo', level: INFO}"
 
 This service call will work on any logger that is running in the process provided that you know its name.
 This includes the loggers in the ROS 2 core, such as ``rcl`` (the common client library package).
@@ -47,7 +47,7 @@ To enable debug logging for ``rcl``, call:
 
 .. code-block:: bash
 
-   ros2 service call /config_logger logging_demo/ConfigLogger "{logger_name: 'rcl', level: DEBUG}"
+   ros2 service call /config_logger logging_demo/srv/ConfigLogger "{logger_name: 'rcl', level: DEBUG}"
 
 You should see debug output from ``rcl`` start to show.
 
@@ -55,7 +55,7 @@ Using the logger config component
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The server that responds to the logger configuration requests has been developed as a component so that it may be added to an existing composition-based system.
-For example, if you are using `a container to run your nodes <composition-using-components>`_, to be able to configure your loggers you only need to request that it additionally load the ``logging_demo::LoggerConfig`` component into the container.
+For example, if you are using `a container to run your nodes <Composition>`, to be able to configure your loggers you only need to request that it additionally load the ``logging_demo::LoggerConfig`` component into the container.
 
 As an example, if you want to debug the ``composition::Talker`` demo, you can start the talker as normal with:
 
@@ -63,13 +63,13 @@ Shell 1:
 
 .. code-block:: bash
 
-   ros2 run composition api_composition
+   ros2 run rclcpp_components component_container
 
 Shell 2:
 
 .. code-block:: bash
 
-   ros2 run composition api_composition_cli composition composition::Talker
+   ros2 component load /ComponentManager composition composition::Talker
 
 And then when you want to enable debug logging, load the ``LoggerConfig`` component with:
 
@@ -77,7 +77,7 @@ Shell 2
 
 .. code-block:: bash
 
-   ros2 run composition api_composition_cli logging_demo logging_demo::LoggerConfig
+   ros2 component load /ComponentManager logging_demo logging_demo::LoggerConfig
 
 And finally, configure all unset loggers to the debug severity by addressing the empty-named logger.
 Note that loggers that have been specifically configured to use a particular severity will not be affected by this call.
@@ -86,7 +86,7 @@ Shell 2:
 
 .. code-block:: bash
 
-   ros2 service call /config_logger logging_demo/ConfigLogger "{logger_name: '', level: DEBUG}"
+   ros2 service call /config_logger logging_demo/srv/ConfigLogger "{logger_name: '', level: DEBUG}"
 
 You should see debug output from any previously unset loggers in the process start to appear, including from the ROS 2 core.
 
@@ -120,3 +120,43 @@ For example, to additionally get the timestamp and location of the log calls, st
 
 You should see the timestamp in seconds and the function name, filename and line number additionally printed with each message.
 *The ``time`` option is only supported as of the ROS 2 Bouncy release.*
+
+Console output colorizing
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default, the output is colorized when it's targeting a terminal.
+If you would like to force enabling or disabling it, you can use the ``RCUTILS_COLORIZED_OUTPUT`` environment variable.
+For example:
+
+.. code-block:: bash
+
+   export RCUTILS_COLORIZED_OUTPUT=0  # 1 for forcing it
+   # Or, on Windows:
+   # set "RCUTILS_COLORIZED_OUTPUT=0"
+   ros2 run logging_demo logging_demo_main
+
+You should see that debug, warn, error and fatal logs aren't colorized now.
+
+.. note::
+
+   In Linux and MacOS forcing colorized output means that if you redirect the output to a file, the ansi escape color codes will appear on it.
+   In windows the colorization method relies on console APIs.
+   If it is forced you will get a new warning saying that colorization failed.
+   The default behavior already checks if the output is a console or not, so forcing colorization is not recommended.
+
+Line buffered console output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default, info and debug log calls aren't line buffered.
+You can force it using ``RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED`` environment variable.
+For example:
+
+.. code-block:: bash
+
+   export RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED=1
+   # Or, on Windows:
+   # set "RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED=1"
+   ros2 run logging_demo logging_demo_main
+
+The output should look as before.
+For details about I/O buffering, see `buffering concepts <https://www.gnu.org/software/libc/manual/html_node/Buffering-Concepts.html>`_.

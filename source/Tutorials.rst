@@ -19,6 +19,7 @@ Basic
    Tutorials/RQt-Port-Plugin-Windows
    Tutorials/Node-arguments
    Tutorials/Launch-system
+   Tutorials/Launch-files-migration-guide
    Tutorials/Working-with-multiple-RMW-implementations
    Tutorials/Composition
    Tutorials/Rosidl-Tutorial.rst
@@ -28,6 +29,7 @@ Basic
    Tutorials/Eclipse-Oxygen-with-ROS-2-and-rviz2
    Tutorials/Building-ROS-2-on-Linux-with-Eclipse-Oxygen
    Tutorials/Building-Realtime-rt_preempt-kernel-for-ROS-2
+   Tutorials/Working-with-Eclipse-CycloneDDS
    Tutorials/Releasing-a-ROS-2-package-with-bloom
 
 

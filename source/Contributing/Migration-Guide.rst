@@ -7,14 +7,14 @@ Migration guide from ROS 1
 
 There are two different kinds of package migrations:
 
-* Migrating the source code of an existing package from ROS 1 to ROS 2 with the intend that a significant part of the source code will stay the same or at least similar.
+* Migrating the source code of an existing package from ROS 1 to ROS 2 with the intent that a significant part of the source code will stay the same or at least similar.
   An example for this could be `pluginlib <https://github.com/ros/pluginlib>`_ where the source code is maintained in different branches within the same repository and commonly patches can be ported between those branches when necessary.
 * Implementing the same or similar functionality of a ROS 1 package for ROS 2 but with the assumption that the source code will be significantly different.
   An example for this could be `roscpp <https://github.com/ros/ros_comm/tree/melodic-devel/clients/roscpp>`_ in ROS 1 and `rclcpp <https://github.com/ros2/rclcpp/tree/master/rclcpp>`_ in ROS 2 which are separate repositories and don't share any code.
 
 This article focuses on the former case and describes the high-level steps to migrate a ROS 1 package to ROS 2.
 It does not aim to be a step-by-step migration instruction and is not considered the *final* "solution".
-Future versions will aim to make migration smoother and less effort up to the point that maintaining a single package from the same branch for ROS 1 as well as ROS 2.
+Future versions will aim to make migration smoother and less effort up to the point of maintaining a single package from the same branch for ROS 1 as well as ROS 2.
 
 Prerequisites
 -------------
@@ -37,6 +37,13 @@ Since ROS 1 supports all formats it is safe to perform that conversion in the RO
 
 Some packages might have different names in ROS 2 so the dependencies might need to be updated accordingly.
 
+Metapackages
+^^^^^^^^^^^^
+
+ROS 2 doesn't have a special package type for metapackages.
+Metapacakges can still exist as regular packages that only contain runtime dependencies.
+When migrating metapackages from ROS 1, simply remove the ``<metapackage />`` tag in your package manifest.
+
 Message, service, and action definitions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -57,13 +64,11 @@ In your ``package.xml``:
 
 In your ``CMakeLists.txt``:
 
-* Start by enabling C++11
+* Start by enabling C++14
 
 .. code-block:: cmake
 
-   if(NOT WIN32)
-     add_definitions(-std=c++11)
-   endif()
+   set(CMAKE_CXX_STANDARD 14)
 
 
 * Add ``find_package(rosidl_default_generators REQUIRED)``
@@ -215,7 +220,7 @@ Linters
 In ROS 2 we are working to maintain clean code using linters.
 The styles for different languages are defined in our `Developer Guide <Developer-Guide>`.
 
-If you are starting a project from scratch it is recommended to follow the style guide and turn on the automatic linter unittests by adding these lines just below ``if(BUILD_TESTING)`` (until alpha 5 this was ``AMENT_ENABLE_TESTING``).
+If you are starting a project from scratch it is recommended to follow the style guide and turn on the automatic linter unit tests by adding these lines just below ``if(BUILD_TESTING)`` (until alpha 5 this was ``AMENT_ENABLE_TESTING``).
 
 .. code-block:: cmake
 
@@ -331,16 +336,16 @@ ROS client library
 Boost
 ~~~~~
 
-Much of the functionality previously provided by Boost has been integrated into C++11.
+Much of the functionality previously provided by Boost has been integrated into the C++ standard library.
 As such we would like to take advantage of the new core features and avoid the dependency on boost where possible.
 
 Shared Pointers
 """""""""""""""
 
-To switch shared pointers from boost to C++11 replace instances of:
+To switch shared pointers from boost to standard C++ replace instances of:
 
 
-* ``#include <boost/shared_ptr.hpp>`` with ``<memory>``
+* ``#include <boost/shared_ptr.hpp>`` with ``#include <memory>``
 * ``boost::shared_ptr`` with ``std::shared_ptr``
 
 There may also be variants such as ``weak_ptr`` which you want to convert as well.
@@ -547,7 +552,7 @@ Changing C++ library calls
 
 Instead of passing the node's name to the library initialization call, we do
 the initialization, then pass the node name to the creation of the node object
-(we can use the ``auto`` keyword because now we're requiring a C++11 compiler):
+(we can use the ``auto`` keyword because now we're requiring a C++14 compiler):
 
 .. code-block:: cpp
 
@@ -560,7 +565,7 @@ The creation of the publisher and rate objects looks pretty similar, with some
 changes to the names of namespace and methods.
 For the publisher, instead of an integer queue length argument, we pass a
 quality of service (qos) profile, which is a far more flexible way to
-controlling how message delivery is handled.
+control how message delivery is handled.
 In this example, we just pass the default profile ``rmw_qos_profile_default``
 (it's global because it's declared in ``rmw``, which is written in C and so
 doesn't have namespaces).
@@ -759,15 +764,15 @@ ROS 2 relies on a higher version of CMake:
    #cmake_minimum_required(VERSION 2.8.3)
    cmake_minimum_required(VERSION 3.5)
 
-ROS 2 relies on the C++11 standard.
-Depending on what compiler you're using, support for C++11 might not be enabled
+ROS 2 relies on the C++14 standard.
+Depending on what compiler you're using, support for C++14 might not be enabled
 by default.
 Using ``gcc`` 5.3 (which is what is used on Ubuntu Xenial), we need to enable it
 explicitly, which we do by adding this line near the top of the file:
 
 .. code-block:: cmake
 
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+   set(CMAKE_CXX_STANDARD 14)
 
 Using ``catkin``, we specify the packages we want to build against by passing them
 as ``COMPONENTS`` arguments when initially finding ``catkin`` itself.
@@ -836,7 +841,7 @@ Putting it all together, the new ``CMakeLists.txt`` looks like this:
    #cmake_minimum_required(VERSION 2.8.3)
    cmake_minimum_required(VERSION 3.5)
    project(talker)
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+   set(CMAKE_CXX_STANDARD 14)
    #find_package(catkin REQUIRED COMPONENTS roscpp std_msgs)
    find_package(ament_cmake REQUIRED)
    find_package(rclcpp REQUIRED)
@@ -888,14 +893,15 @@ setup file, from our install tree, we can invoke it by name directly
 Licensing
 ---------
 
-In ROS 2 our recommended license is the `Apache 2.0 License <https://www.apache.org/licenses/LICENSE-2.0>`__
-In ROS 1 our recommended license was the `3-Clause BSD License <https://opensource.org/licenses/BSD-3-Clause>`__
+In ROS 2 our recommended license is the `Apache 2.0 License <https://www.apache.org/licenses/LICENSE-2.0>`__.
+In ROS 1 our recommended license was the `3-Clause BSD License <https://opensource.org/licenses/BSD-3-Clause>`__.
 
 For any new project we recommend using the Apache 2.0 License, whether ROS 1 or ROS 2.
 
-However when migrating code from ROS 1 to ROS 2 we cannot simply change the license, the existing license must be preserved for any preexisting contributions.
+However, when migrating code from ROS 1 to ROS 2 we cannot simply change the license.
+The existing license must be preserved for any preexisting contributions.
 
-To that end if a package is being migrated we recommend keeping the existing license and continuing to contributing to that package under the existing OSI license, which we expect to be the BSD license for core elements.
+To that end if a package is being migrated we recommend keeping the existing license and continuing to contribute to that package under the existing OSI license, which we expect to be the BSD license for core elements.
 
 This will keep things clear and easy to understand.
 
@@ -904,4 +910,4 @@ Changing the License
 
 It is possible to change the license, however you will need to contact all the contributors and get permission.
 For most packages this is likely to be a significant effort and not worth considering.
-If the package as a small set of contributors then this may be feasible.
+If the package has a small set of contributors then this may be feasible.

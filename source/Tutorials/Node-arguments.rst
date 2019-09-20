@@ -46,6 +46,12 @@ For example, the following will pass the remapping arguments to the specified no
 
    ros2 run composition manual_composition talker:__node:=my_talker listener:__node:=my_listener
 
+The following example will both change the node name and remap a topic (node and namespace changes are always applied *before* topic remapping):
+
+.. code-block:: bash
+
+   ros2 run composition manual_composition talker:__node:=my_talker my_talker:chatter:=my_topic listener:__node:=my_listener my_listener:chatter:=my_topic
+
 Logger configuration
 --------------------
 
@@ -71,6 +77,8 @@ As an example, save the following as ``demo_params.yaml``:
           some_lists:
               some_integers: [1, 2, 3, 4]
               some_doubles : [3.14, 2.718]
+
+Then either declare the parameters within your node with ``declare_parameter``  or ``declare_parameters`` (see `documentation <http://docs.ros2.org/dashing/api/rclcpp/classrclcpp_1_1Node.html#a222633623e5c933b7953e5718ec3649a>`__ for function signatures), or `set the node to automatically declare parameters <http://docs.ros2.org/dashing/api/rclcpp/classrclcpp_1_1NodeOptions.html#a094ceb7af7c9b358ec007a4b8e14d40d>`__ if they were passed in via a command line override.
 
 Then run the following:
 

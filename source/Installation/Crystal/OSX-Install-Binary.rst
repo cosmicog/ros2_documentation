@@ -75,6 +75,7 @@ You need the following things installed before installing ROS 2.
   ``ln -s /usr/local/share/sip/Qt5 /usr/local/share/sip/PyQt5``
 
   ``brew install graphviz``
+
   ``python3 -m pip install pygraphviz pydot``
 
 *
@@ -139,9 +140,7 @@ For ROS 2 releases later than Ardent, set the ``OSPL_HOME`` environment variable
 Enable Connext support
 ^^^^^^^^^^^^^^^^^^^^^^
 
-To use RTI Connext you will need to have obtained a license from RTI.
-
-You can install the OS X package of Connext version 5.3.1 provided by RTI from their `downloads page <https://www.rti.com/downloads>`__.
+To use RTI Connext DDS there are options available for `university, purchase or evaluation <../Install-Connext-University-Eval>`
 
 After installing, run RTI launcher and point it to your license file.
 
@@ -153,7 +152,7 @@ Set the ``NDDSHOME`` environment variable:
 
 You may need to increase shared memory resources following https://community.rti.com/kb/osx510.
 
-If you want to install the Connext DDS-Security plugins please refer to `this page <Install-Connext-Security-Plugins>`.
+If you want to install the Connext DDS-Security plugins please refer to `this page <../Install-Connext-Security-Plugins>`.
 
 Set up the ROS 2 environment
 ----------------------------

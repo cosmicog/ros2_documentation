@@ -3,7 +3,7 @@ Writing an Action Server (Python)
 
 In this tutorial, we look at implementing an action server in Python.
 
-Make sure you have satisfied all `prequisites <../Actions>`.
+Make sure you have satisfied all `prerequisites <../Actions>`.
 
 Executing Goals
 ---------------
@@ -26,7 +26,7 @@ The class is initialized by calling the ``Node`` constructor, naming our node "f
     :lines: 11
 
 After the class defintion, we define a function ``main()`` that initializes ROS, creates an instance of our ``FibonacciActionServer`` node, and calls `rclpy.spin() <http://docs.ros2.org/latest/api/rclpy/api/init_shutdown.html#rclpy.spin>`_ on our node.
-The spin will keep our action sever alive and responsive to incoming goals.
+The spin will keep our action server alive and responsive to incoming goals.
 Finally, we call ``main()`` in the entry point of our Python program.
 
 Next, we'll import our Fibonacci action definition and create an action server:
@@ -47,17 +47,20 @@ The action server requires four arguments:
 
 Note, all goals are accepted by default.
 
-Let's try runnning our action server:
+Let's try running our action server:
 
 .. code-block:: bash
 
+    # Linux/OSX
     python3 fibonacci_action_server.py
+    # Windows
+    python fibonacci_action_server.py
 
 In another terminal, we can use the command line interface to send a goal:
 
 .. code-block:: bash
 
-    ros2 action  send_goal fibonacci action_tutorials/Fibonacci "{order: 5}"
+    ros2 action send_goal fibonacci action_tutorials/action/Fibonacci "{order: 5}"
 
 You should see our logged message "Executing goal..." followed by a warning that the goal state was not set.
 By default, if the goal handle state is not set in the execute callback it assumes the *aborted* state.
@@ -82,7 +85,8 @@ Alright, let's make our goal execution actually compute and return the requested
 
 After computing the sequence, we assign it to the result message field before returning.
 
-Again restarting the action server and send another goal, you should see the goal finished, this time with the proper result sequence.
+Again, restart the action server and send another goal.
+You should see the goal finish with the proper result sequence.
 
 Publishing Feedback
 -------------------
@@ -103,4 +107,4 @@ After restarting the action server, we can confirm that feedback is now publishe
 
 .. code-block:: bash
 
-    ros2 action send_goal --feedback fibonacci action_tutorials/Fibonacci "{order: 5}"
+    ros2 action send_goal --feedback fibonacci action_tutorials/action/Fibonacci "{order: 5}"

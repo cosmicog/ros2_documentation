@@ -53,9 +53,14 @@ You need the following things installed before installing ROS 2.
 
        # install OpenSSL for DDS-Security
        brew install openssl
+       # if you are using ZSH, then replace '.bashrc' with '.zshrc'
+       echo "export OPENSSL_ROOT_DIR=$(brew --prefix openssl)" >> ~/.bashrc
 
        # install Qt for RViz
        brew install qt freetype assimp
+
+       # install console_bridge for rosbag2
+       brew install console_bridge
 
        # install dependencies for rcl_logging_log4cxx
        brew install log4cxx
@@ -70,7 +75,17 @@ You need the following things installed before installing ROS 2.
   ``ln -s /usr/local/share/sip/Qt5 /usr/local/share/sip/PyQt5``
 
   ``brew install graphviz``
+
   ``python3 -m pip install pygraphviz pydot``
+
+  .. note::
+
+      You may run into an issue installing ``pygraphviz``, "error: Error locating graphviz".
+      Try the following install command instead:
+
+      .. code-block:: bash
+
+         python3 -m pip install --install-option="--include-path=/usr/local/include/" --install-option="--library-path=/usr/local/lib/" pygraphviz
 
 *
   Install SROS2 dependencies
@@ -114,15 +129,9 @@ Install additional DDS implementations (optional)
 ROS 2 builds on top of DDS.
 It is compatible with multiple DDS or RTPS (the DDS wire protocol) vendors.
 
-*For ROS 2 Bouncy and newer:*
-
 The package you downloaded has been built with *optional* support for three vendors.
 Run-time support for eProsima's Fast RTPS is included bundled by default.
 If you would like to use one of the other vendors you will need to install their software separately.
-
-*For ROS 2 Ardent and older:*
-
-If you downloaded a package that includes support for OpenSplice, you must install OpenSplice as detailed below.
 
 Enable OpenSplice support
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -134,9 +143,7 @@ For ROS 2 releases later than Ardent, set the ``OSPL_HOME`` environment variable
 Enable Connext support
 ^^^^^^^^^^^^^^^^^^^^^^
 
-To use RTI Connext you will need to have obtained a license from RTI.
-
-You can install the OS X package of Connext version 5.3.1 provided by RTI from their `downloads page <https://www.rti.com/downloads>`__.
+To use RTI Connext DDS there are options available for `university, purchase or evaluation <../Install-Connext-University-Eval>`
 
 After installing, run RTI launcher and point it to your license file.
 
@@ -148,7 +155,7 @@ Set the ``NDDSHOME`` environment variable:
 
 You may need to increase shared memory resources following https://community.rti.com/kb/osx510.
 
-If you want to install the Connext DDS-Security plugins please refer to `this page <Install-Connext-Security-Plugins>`.
+If you want to install the Connext DDS-Security plugins please refer to `this page <../Install-Connext-Security-Plugins>`.
 
 Set up the ROS 2 environment
 ----------------------------
@@ -191,7 +198,7 @@ Hooray!
 
 If you have installed support for an optional vendor, see `this page </Tutorials/Working-with-multiple-RMW-implementations>` for details on how to use that vendor.
 
-If you run into issues, see `the troubleshooting section <osx-development-setup-troubleshooting>` on the source installation page.
+If you run into issues, see `the troubleshooting section <Dashing_osx-development-setup-troubleshooting>` on the source installation page.
 
 Build your own packages
 -----------------------

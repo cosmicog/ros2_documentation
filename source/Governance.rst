@@ -1,6 +1,6 @@
 
-ROS 2 Project Governance
-========================
+Project Governance
+==================
 
 Technical Steering Committee (TSC)
 ----------------------------------
@@ -9,14 +9,9 @@ That approach has worked well enough, as evidenced by the widespread adoption of
 
 But with ROS 2, we want to broaden participation to accelerate ROS 2 delivery, starting with these areas: determining the roadmap, developing core tools and libraries, and establishing working groups to focus on important topics.
 To that end, we've established a Technical Steering Committee (TSC).
-As described in the `charter <https://discourse-cdn-sjc2.com/standard17/uploads/ros/original/2X/5/51feec4148e3c458856526ad4bcf44d9912c4c9a.pdf>`__, the TSC comprises representatives of organizations that are contributing to the development of ROS 2, and it has the responsibility to set the technical direction for the project.
+As described in the :download:`charter <Governance/ros2-tsc-charter.pdf>`, the TSC comprises representatives of organizations that are contributing to the development of ROS 2, and it has the responsibility to set the technical direction for the project.
 
-The current members of the ROS 2 TSC are (14 as of 2019-04-01):
-
-.. |acutronic| image:: Governance/acutronic.jpg
-   :alt: Acutronic Robotics logo
-   :height: 35px
-   :target: https://acutronicrobotics.com/
+The current members of the ROS 2 TSC are (14 as of 2019-09-20):
 
 .. |amazon| image:: Governance/amazon.svg
    :alt: Amazon logo
@@ -28,20 +23,25 @@ The current members of the ROS 2 TSC are (14 as of 2019-04-01):
    :height: 35px
    :target: https://www.apex.ai
 
-.. |arm| image:: Governance/arm.svg
-   :alt: Arm logo
-   :height: 35px
-   :target: https://www.arm.com/
-
 .. |bosch| image:: Governance/bosch_75h.jpg
    :alt: Bosch logo
    :height: 35px
    :target: https://www.bosch.com/
 
+.. |canonical| image:: Governance/ubuntu.svg
+   :alt: Ubuntu logo
+   :height: 35px
+   :target: https://ubuntu.com/
+
 .. |eprosima| image:: Governance/eprosima.svg
    :alt: eProsima logo
    :height: 35px
    :target: https://eprosima.com/
+
+.. |gvsc| image:: Governance/gvsc.png
+   :alt: GVSC logo
+   :height: 35px
+   :target: https://gvsc.army.mil/
 
 .. |intel| image:: Governance/intel.svg
    :alt: Intel logo
@@ -68,10 +68,10 @@ The current members of the ROS 2 TSC are (14 as of 2019-04-01):
    :height: 35px
    :target: https://www.robotis.com/
 
-.. |tardec| image:: Governance/tardec.png
-   :alt: TARDEC logo
+.. |samsung| image:: Governance/samsung.svg
+   :alt: Samsung logo
    :height: 35px
-   :target: https://tardec.army.mil/
+   :target: https://www.samsung.com
 
 .. |tieriv| image:: Governance/TierIV.png
    :alt: Tier IV logo
@@ -87,16 +87,14 @@ The current members of the ROS 2 TSC are (14 as of 2019-04-01):
    :align: center
    :widths: auto
 
-   * - |acutronic|
-     - Acutronic Robotics: Víctor Mayoral Vilches
    * - |amazon|
-     - Amazon: Rutvik Hora
+     - Amazon: Adam Duncan
    * - |apex|
      - Apex.AI: Dejan Pangercic
-   * - |arm|
-     - Arm: Filipe Rinaldi
    * - |bosch|
      - Bosch: Karsten Knese
+   * - |canonical|
+     - Canonical: Kyle Fazzari
    * - |eprosima|
      - eProsima: Jaime Martin Losa
    * - |intel|
@@ -104,24 +102,26 @@ The current members of the ROS 2 TSC are (14 as of 2019-04-01):
    * - |lge|
      - LG Electronics: Brian Shin
    * - |microsoft|
-     - Microsoft: Lou Amadio
+     - Microsoft: Sean Yen
    * - |openrobotics|
      - Open Robotics: Dirk Thomas
    * - |robotis|
      - ROBOTIS: Yoonseok Pyo
-   * - |tardec|
-     - TARDEC: Jonathon Smereka
+   * - |samsung|
+     - Samsung: Steven Macenski
+   * - |gvsc|
+     - GVSC: Jerry Towler (SwRI)
    * - |tieriv|
      - Tier IV: Geoffrey Biggs
    * - |tri|
-     - Toyota Research Institute: Allison Thackston
+     - Toyota Research Institute: Toffee Albina
 
 If you are interested in joining the ROS 2 TSC, please inquire via info@openrobotics.org.
 
 Working Groups (WGs)
 --------------------
 
-As described in its `charter <https://discourse-cdn-sjc2.com/standard17/uploads/ros/original/2X/5/51feec4148e3c458856526ad4bcf44d9912c4c9a.pdf>`__, the TSC establishes working groups (WGs) to discuss and make progress on specific topics.
+As described in its :download:`charter <Governance/ros2-tsc-charter.pdf>`, the TSC establishes working groups (WGs) to discuss and make progress on specific topics.
 
 The current WGs are (4 as of 2019-04-01):
 
@@ -151,7 +151,7 @@ The current WGs are (4 as of 2019-04-01):
 
 * Security
 
- * Lead(s): Thomas Moulard
+ * Lead(s): Joe McManus, Kyle Fazzari
  * Resources:
 
   * `2019-02-13 meeting notes <https://discourse.ros.org/t/ros2-security-working-group-online-meeting-feb-13th-2019-between-2-00-3-00-pm-pst/7639/2>`__
